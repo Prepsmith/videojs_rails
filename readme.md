@@ -35,14 +35,14 @@ And that resource to application.css file
 And to production.rb add this line
 
 ```ruby
-config.assets.precompile += %w( video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff )
+config.assets.precompile += %w( video-js.swf VideoJS.eot VideoJS.svg VideoJS.ttf VideoJS.woff )
 ```
 
 In Rails > 4.1
 Add this line to config/initializers/assets.rb
 
 ```ruby
-Rails.application.config.assets.precompile += %w( video-js.swf vjs.eot vjs.svg vjs.ttf vjs.woff )
+Rails.application.config.assets.precompile += %w( video-js.swf VideoJS.eot VideoJS.svg VideoJS.ttf VideoJS.woff )
 ```
 
 ## Usage

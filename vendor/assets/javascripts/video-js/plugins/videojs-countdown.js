@@ -52,6 +52,7 @@
     function resetSession() {
       clearInterval(interval);
       isCancel = false;
+      count = settings.count;
       countdownDom.hide();
       numberDom.text(settings.count);
     }

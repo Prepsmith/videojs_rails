@@ -30,6 +30,7 @@
     var el = this.el();
     var settings = extend({}, defaults, options || {});
     var isCancel = false;
+    var isStart = true;
     var interval;
     var count = settings.count;
     var htmlStr = "<div class='vjs-countdown'>"+
@@ -66,6 +67,12 @@
       reset: function(){
         resetSession();
       },
+      stop: function(){
+        isStart = false;
+      },
+      start: function(){
+        isStart = true;
+      }
     };
 
     cancelDom.click(function() {
@@ -78,20 +85,22 @@
 
     var counter_started = 0;
     player.on('ended', function() {
-      countdownDom.show();
-      interval = setInterval(function(){
-        count--;
-        numberDom.text(count);
-        if (count <= 0) {
-          clearInterval(interval);
-          countdownDom.hide();
-          numberDom.text(settings.count);
-            if (typeof settings.getNextPlay === "function" && !isCancel) {
-               settings.getNextPlay();
-            }
-          return;
-        }
-      }, 1000);
+      if (isStart) {
+        countdownDom.show();
+        interval = setInterval(function(){
+          count--;
+          numberDom.text(count);
+          if (count <= 0) {
+            clearInterval(interval);
+            countdownDom.hide();
+            numberDom.text(settings.count);
+              if (typeof settings.getNextPlay === "function" && !isCancel) {
+                 settings.getNextPlay();
+              }
+            return;
+          }
+        }, 1000);
+      }
       // if (counter_started === 0) {
       //   counter_started++;
       //   player.on('playing', function() {

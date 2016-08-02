@@ -63,13 +63,16 @@
         settings.nextPlayTitle = title;
         countdownTitle.text(title);
       },
+      reset: function(){
+        resetSession();
+      },
     };
 
     cancelDom.click(function() {
       resetSession();
     });
 
-    player.on('playing', function() {
+    player.on('play', function() {
       resetSession();
     });
 

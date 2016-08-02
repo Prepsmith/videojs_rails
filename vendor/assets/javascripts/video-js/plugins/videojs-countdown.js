@@ -45,9 +45,9 @@
     $(el).append(htmlStr);
 
     var countdownDom = $(el).find('.vjs-countdown');
-    window.cdd = countdownDom;
     var numberDom = $(countdownDom).find('.number');
     var cancelDom = $(countdownDom).find('.vjs-countdown-cancel')
+    var countdownTitle = $(countdownDom).find('.vjs-countdown-title')
 
     function resetSession() {
       clearInterval(interval);
@@ -60,6 +60,7 @@
       updateNextPlayTitle: function(title) {
         resetSession();
         settings.nextPlayTitle = title;
+        countdownTitle.text(title);
       },
     };
 

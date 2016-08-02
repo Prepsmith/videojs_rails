@@ -25,10 +25,13 @@
   },
 
   countdown = function(options) {
+
     var player = this;
     var el = this.el();
     var settings = extend({}, defaults, options || {});
     var isCancel = false;
+    var interval;
+    var count = settings.count;
     var htmlStr = "<div class='vjs-countdown'>"+
           "<div class='vjs-overlay-full'></div>"+
           "<div class='vjs-text-area'>"+
@@ -46,21 +49,32 @@
     var numberDom = $(countdownDom).find('.number');
     var cancelDom = $(countdownDom).find('.vjs-countdown-cancel')
 
-    cancelDom.click(function() {
-      isCancel = true;
+    function resetSession() {
+      clearInterval(interval);
+      isCancel = false;
       countdownDom.hide();
+      numberDom.text(settings.count);
+    }
+
+    player.countdown = {
+      updateNextPlayTitle: function(title) {
+        resetSession();
+        settings.nextPlayTitle = title;
+      },
+    };
+
+    cancelDom.click(function() {
+      resetSession();
     });
 
     player.on('playing', function() {
-      countdownDom.hide();
-      isCancel = false;
-      //clearInterval(interval);
+      resetSession();
     });
 
+    var counter_started = 0;
     player.on('ended', function() {
       countdownDom.show();
-      var count = settings.count;
-      var interval = setInterval(function(){
+      interval = setInterval(function(){
         count--;
         numberDom.text(count);
         if (count <= 0) {
@@ -73,6 +87,15 @@
           return;
         }
       }, 1000);
+      // if (counter_started === 0) {
+      //   counter_started++;
+      //   player.on('playing', function() {
+      //     count = settings.count;
+      //     isCancel = false;
+      //     countdownDom.hide();
+      //     clearInterval(interval);
+      //   });
+      // }
     });
   };
   vjs.plugin('countdown', countdown);

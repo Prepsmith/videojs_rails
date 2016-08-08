@@ -17,6 +17,7 @@
   defaults = {
     title: "The video connection was lost, please confirm you're connected to the internet.",
     buttonText: 'Retry',
+    tryErrorTime: 2000,
     buttonClick: '',
     beforeMethod: ''
   },
@@ -24,6 +25,7 @@
   errorTip = function(options) {
     var player = this;
     var timeoutId = null;
+    var timeoutError = null;
     var el = this.el();
     var settings = extend({}, defaults, options || {});
     var htmlStr = "<div class='vjs-error-tip'>"+
@@ -50,9 +52,9 @@
         setIsError(true);
       }
 
-      if (isError() && timeoutId === null){
-        timeoutId = setTimeout(openAlert(),500);
-      }
+      // if (isError() && timeoutId === null){
+      //   timeoutId = setTimeout(openAlert(),500);
+      // }
     });
 
     function isError(){
@@ -92,19 +94,35 @@
       resetTimeout();
     }
 
+    function checkIsError() {
+      timeoutError = setTimeout(
+        (function(){
+          player.error(settings.title);
+        }).bind(this),
+        settings.tryErrorTime);
+    }
+
+    function clearIsError() {
+      if (timeoutError) {
+        clearTimeout(timeoutError);
+        timeoutError = null;
+      }
+    }
+
     player.on('error', function() {
       openAlert();
     });
 
     player.on('play', function() {
-
+      checkIsError();
     });
 
     player.on('playing', function() {
-      if (isError() && timeoutId !== null) {
-        closeAlert();
-        setIsError(false);
-      }
+      // if (isError() && timeoutId !== null) {
+      //   closeAlert();
+      //   setIsError(false);
+      // }
+      clearIsError();
     });
 
     player.errorTip = {

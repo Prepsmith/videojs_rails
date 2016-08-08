@@ -117,6 +117,10 @@
       checkIsError();
     });
 
+    player.on('ended', function() {
+      clearIsError();
+    });
+
     player.on('playing', function() {
       // if (isError() && timeoutId !== null) {
       //   closeAlert();

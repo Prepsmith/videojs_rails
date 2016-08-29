@@ -53,6 +53,15 @@
             player.controlBar.playToggle.on("click",  player.controlBar.playToggle.handleClick);
             player.controlBar.playToggle.el().style.cursor = 'pointer';
         },
+
+        setDisableState: function(bool){
+          if (bool) {
+            this.disable();
+          } else {
+            this.enable();
+          }
+        },
+
         getState: function(){
           return state;
         }

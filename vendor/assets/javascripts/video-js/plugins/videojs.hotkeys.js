@@ -4,6 +4,7 @@
  *
  * Copyright (c) 2015 Chris Dougherty
  * Licensed under the Apache-2.0 license.
+ * hotkeys support global (Grayson)
  */
 
 ;(function(root, factory) {
@@ -17,7 +18,7 @@
 
 })(window, function(window, videojs) {
   "use strict";
-  window['videojs_hotkeys'] = { version: "0.2.17" };
+  window['videojs_hotkeys'] = { version: "0.2.17-hotkeys-global" };
 
   var hotkeys = function(options) {
     var player = this;
@@ -343,10 +344,18 @@
       return (e.which === 70);
     }
 
-    player.on('keydown', keyDown);
+    // player.on('keydown', keyDown);
+    $("body").keydown(keyDown);
+
     player.on('dblclick', doubleClick);
     player.on('mousewheel', mouseScroll);
     player.on("DOMMouseScroll", mouseScroll);
+
+    player.hotkeys = {
+      destroy: function(){
+        $( "body" ).unbind( "keydown", keyDown );
+      }
+    };
 
     return this;
   };
